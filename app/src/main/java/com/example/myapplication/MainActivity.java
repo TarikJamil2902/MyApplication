@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Users> dataArrayList = new ArrayList<>();
     UserAdapters listAdapter;
     Users listData;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -5,22 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.DBUtil.Database;
 import com.example.myapplication.Entity.Users;
 
 import java.util.Calendar;
 
-public class signup extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
 
     private EditText username, email, password, dob;
     private Button signup, login;
@@ -57,7 +52,7 @@ public class signup extends AppCompatActivity {
             int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
             // Open the DatePickerDialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(signup.this,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(SignUp.this,
                     (view, selectedYear, selectedMonth, selectedDayOfMonth) -> {
                         // Set the selected date in the EditText
                         String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
@@ -107,7 +102,7 @@ public class signup extends AppCompatActivity {
 //            }
 
             if (user.isEmpty() || mail.isEmpty() || pass.isEmpty() || dateOfbirth.isEmpty()) {
-                Toast.makeText(signup.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUp.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -127,11 +122,11 @@ public class signup extends AppCompatActivity {
             }
 
 
-            Toast.makeText(signup.this, "Signup Successfull!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(signup.this, Login.class));
+            Toast.makeText(SignUp.this, "Signup Successfull!", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(SignUp.this, Login.class));
         });
         login.setOnClickListener(v -> {
-            startActivity(new Intent(signup.this, Login.class));
+            startActivity(new Intent(SignUp.this, Login.class));
         });
     }
 }
