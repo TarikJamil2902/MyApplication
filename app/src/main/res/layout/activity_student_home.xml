@@ -11,15 +11,17 @@
         android:id="@+id/getAll"
         android:layout_width="112dp"
         android:layout_height="68dp"
-        android:text="Submit"
+        android:layout_marginTop="39dp"
+        android:text="Show All"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintHorizontal_bias="0.909"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.121" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="406dp"
         android:layout_height="585dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,5 +44,16 @@
                 android:text="TextView" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/addStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="65dp"
+        android:layout_marginBottom="36dp"
+        android:text="Add Student"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/getAll"
+        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

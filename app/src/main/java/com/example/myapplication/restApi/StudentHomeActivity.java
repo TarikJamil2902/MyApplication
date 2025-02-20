@@ -1,5 +1,6 @@
 package com.example.myapplication.restApi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class StudentHomeActivity extends AppCompatActivity {
 
-     Button getBtn;
+     Button getBtn, addBtn;
 
        TextView tv;
 
@@ -32,6 +33,16 @@ public class StudentHomeActivity extends AppCompatActivity {
 
         getBtn = findViewById(R.id.getAll);
         tv = findViewById(R.id.textViewGetAll);
+        addBtn = findViewById(R.id.addStudent);
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(StudentHomeActivity.this, addStudentActivity.class );
+                startActivity(intent);
+            }
+        });
 
         getBtn.setOnClickListener(new View.OnClickListener() {
             @Override
