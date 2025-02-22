@@ -2,6 +2,7 @@ package com.example.myapplication.restApi;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -120,7 +121,7 @@ public class addStudentActivity extends AppCompatActivity {
             }
         }
     }
-
+APIRequestDao apiRequest = new APIRequestDao();
     private void submitForm() {
         String name = editTextName.getText().toString().trim();
         String username = editTextUsername.getText().toString().trim();
@@ -147,13 +148,17 @@ public class addStudentActivity extends AppCompatActivity {
             currentStudent.setName(name);
             currentStudent.setUsername(username);
             currentStudent.setPassword(password);
-
+            apiRequest.updateStudent(this,currentStudent);
+            startActivity(new Intent(addStudentActivity.this, StudentHomeActivity.class));
             Toast.makeText(this, "Student Updated!", Toast.LENGTH_SHORT).show();
         } else {
             // Create new student
             Student newStudent = new Student(name, username, password);
             System.out.println(newStudent);
+            System.out.println("Gender " + selectedGender + ", Hobbies " + hobbiesStr + ", Grade " +selectedGrade);
+            apiRequest.addStudent(this,newStudent);
             Toast.makeText(this, "Student Added!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(addStudentActivity.this,StudentHomeActivity.class));
         }
 
 

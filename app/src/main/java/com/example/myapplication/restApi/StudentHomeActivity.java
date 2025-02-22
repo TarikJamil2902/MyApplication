@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,14 +17,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.Entity.Student;
 import com.example.myapplication.R;
+import com.example.myapplication.adapters.StudentListAdapter;
 
 import java.util.List;
 
 public class StudentHomeActivity extends AppCompatActivity {
 
-     Button getBtn, addBtn;
-
-       TextView tv;
+    Button getBtn, addBtn;
+    TextView tv;
+    ListView listView;
+    StudentListAdapter adapter;
+    List<Student> studentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,78 +35,127 @@ public class StudentHomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_home);
 
+
         getBtn = findViewById(R.id.getAll);
-        tv = findViewById(R.id.textViewGetAll);
         addBtn = findViewById(R.id.addStudent);
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        tv = findViewById(R.id.textViewGetAll);
+//        APIRequestDao apiRequest = new APIRequestDao();
 
-                Intent intent = new Intent(StudentHomeActivity.this, addStudentActivity.class );
-                startActivity(intent);
+
+        getBtn = findViewById(R.id.getAll);
+        addBtn = findViewById(R.id.addStudent);
+        listView = findViewById(R.id.studentListView);
+
+        APIRequestDao apiRequest = new APIRequestDao();
+
+        apiRequest.getList(StudentHomeActivity.this, new APIRequestDao.ApiCallback() {
+            @Override
+            public void onSuccess(List<Student> students) {
+                // Update the student list and notify the adapter
+                studentList = students;
+                adapter = new StudentListAdapter(StudentHomeActivity.this, studentList);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(StudentHomeActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
-        getBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        addBtn.setOnClickListener(v -> {
+            // Navigate to Add Student Activity
+            startActivity(new Intent(StudentHomeActivity.this, addStudentActivity.class));
+        });
 
+        getBtn.setOnClickListener(v -> {
+            // Fetch students again (if needed)
+            apiRequest.getList(StudentHomeActivity.this, new APIRequestDao.ApiCallback() {
+                @Override
+                public void onSuccess(List<Student> students) {
+                    studentList.clear();
+                    studentList.addAll(students);
+                    adapter.notifyDataSetChanged(); // Refresh the list
+                }
 
-                APIRequestDao apiRequest = new APIRequestDao();
-
-
-                //**Get All Data
-                apiRequest.getList(StudentHomeActivity.this, new APIRequestDao.ApiCallback() {
-                    @Override
-                    public void onSuccess(List<Student> students) {
-                        // Handle the successful response and update the UI
-                        StringBuilder studentDetails = new StringBuilder();
-                        for (Student student : students) {
-                            studentDetails.append("Name: " + student.getName() + "\n");
-                            studentDetails.append("Username: " + student.getUsername() + "\n");
-                            studentDetails.append("ID: " + student.getId() + "\n\n");
-                        }
-
-                        // Set the details to the TextView
-                        tv.setText(studentDetails.toString());
-
-                        // Optionally log the student names for debugging
-                        for (Student student : students) {
-                            Log.d("Student Info", student.getName());
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                        // Handle the error (e.g., show a Toast)
-                        Toast.makeText(StudentHomeActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-                        tv.setText(errorMessage);
-                    }
-                });
-
-
-                //**Post Object
-
-//                Student student = new Student();
-//                student.setName("Bangladesh");
-//                student.setUsername("Bangladesh");
-//                student.setPassword("5644 Bangladesh");
-
-//                apiRequest.addStudent(getApplicationContext(),student);
-
-                //**Update
-//                student.setId(45574);
-//                apiRequest.updateStudent(getApplicationContext(),student);
-
-
-                //**Delete
-//                apiRequest.deleteStudent(getApplicationContext(), 45574);
-
-
-         }
-});
-
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(StudentHomeActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
+
+
+
+//        apiRequest.getList(StudentHomeActivity.this, new APIRequestDao.ApiCallback() {
+//            @Override
+//            public void onSuccess(List<Student> students) {
+//                // Handle the successful response and update the UI
+//                StringBuilder studentDetails = new StringBuilder();
+//                for (Student student : students) {
+//                    studentDetails.append("Name: " + student.getName() + "\n");
+//                    studentDetails.append("Username: " + student.getUsername() + "\n");
+//                    studentDetails.append("ID: " + student.getId() + "\n\n");
+//                }
+//
+//                // Set the details to the TextView
+//                tv.setText(studentDetails.toString());
+//
+//                // Optionally log the student names for debugging
+//                for (Student student : students) {
+//                    Log.d("Student Info", student.getName());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//                // Handle the error (e.g., show a Toast)
+//                Toast.makeText(StudentHomeActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+
+//        addBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(StudentHomeActivity.this, StudentAddActivity.class));
+//            }
+//        });
+//
+//
+//        getBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                apiRequest.getList(StudentHomeActivity.this, new APIRequestDao.ApiCallback() {
+//                    @Override
+//                    public void onSuccess(List<Student> students) {
+//                        // Handle the successful response and update the UI
+//                        StringBuilder studentDetails = new StringBuilder();
+//                        for (Student student : students) {
+//                            studentDetails.append("Name: " + student.getName() + "\n");
+//                            studentDetails.append("Username: " + student.getUsername() + "\n");
+//                            studentDetails.append("ID: " + student.getId() + "\n\n");
+//                        }
+//
+//                        // Set the details to the TextView
+//                        tv.setText(studentDetails.toString());
+//
+//                        // Optionally log the student names for debugging
+//                        for (Student student : students) {
+//                            Log.d("Student Info", student.getName());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String errorMessage) {
+//                        // Handle the error (e.g., show a Toast)
+//                        Toast.makeText(StudentHomeActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//      });
+
 }
